@@ -1,0 +1,23 @@
+{
+  "name": "easy-apply-api",
+  "version": "1.0.0",
+  "description": "Easy Apply API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "easy",
+    "apply"
+  ],
+  "author": "Raja Vengala",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "google-auth-library": "^0.10.0",
+    "mongodb": "^2.2.31",
+    "morgan": "^1.8.2"
+  }
+}
