@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Test</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+          content="944056354118-53uhhn2tnmmoaj2cj2830qmsreua2jvc.apps.googleusercontent.com">
+    <script>
+        function onSignIn(googleUser) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:3000/api/validate');
+            xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+            xhr.onload = function () {
+                console.log('Signed in as: ' + xhr.responseText);
+            };
+            xhr.send(JSON.stringify({
+                'idtoken': googleUser.getAuthResponse().id_token
+            }));
+        }
+    </script>
+</head>
+<body>
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
+</body>
+</html>
