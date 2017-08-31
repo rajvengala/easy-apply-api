@@ -99,6 +99,22 @@ Easy Apply is a cloud based school admission processing service.
             admissionsFor : [ "Montessorie", "Nursery"]
         }
     
+## Validate Google Sign-in [/validate]
+
+### Validate logon user after successful sign-in [POST]
+
++ Request (application/json)
+
+        {
+            id_token="extract from Google auth API"
+        }
+        
++ Response 200 (application/json)
+
+        {
+            status: 'ok'
+        }
+
 ## Profile [/users/{user_id}]
 
 + Parameters
