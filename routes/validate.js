@@ -5,7 +5,7 @@ var GoogleAuth = require('google-auth-library');
 
 /* Validate user's token post google sign-in */
 router.post('/', (req, res, next) => {
-  const CLIENT_ID = '944056354118-53uhhn2tnmmoaj2cj2830qmsreua2jvc.apps.googleusercontent.com';
+  var CLIENT_ID = '944056354118-53uhhn2tnmmoaj2cj2830qmsreua2jvc.apps.googleusercontent.com';
   var auth = new GoogleAuth;
   var client = new auth.OAuth2(CLIENT_ID, '', '');
   client.verifyIdToken(req.body.idtoken, CLIENT_ID, (err, user) => {
