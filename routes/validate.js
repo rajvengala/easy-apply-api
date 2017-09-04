@@ -8,9 +8,9 @@ router.post('/', (req, res, next) => {
   var CLIENT_ID = '944056354118-53uhhn2tnmmoaj2cj2830qmsreua2jvc.apps.googleusercontent.com';
   var auth = new GoogleAuth;
   var client = new auth.OAuth2(CLIENT_ID, '', '');
-  client.verifyIdToken(req.body.idtoken, CLIENT_ID, (err, user) => {
-      if (user) {
-        var payload = user.getPayload();
+  client.verifyIdToken(req.body.idtoken, CLIENT_ID, (err, login) => {
+      if (login) {
+        var payload = login.getPayload();
         var user_id = payload.sub;
         var email = payload.email;
         var name = payload.name;
@@ -18,31 +18,34 @@ router.post('/', (req, res, next) => {
           _id: user_id,
           profile: {
             city: "",
-            "country": "India",
+            name: name,
+            country: "India",
             email: email,
             phone: ""
           }
         };
 
         var db = req.app.locals.db;
-        db.collection('users').find({_id: user_id}).toArray().then(docs => {
-          if (docs.length === 0) {
-            db.collection('users').insertOne(userProfile).then(row_count => {
-              if (row_count === 1) {
-                res.send({status: 'ok'});
+        db.collection('users').find({_id: user_id}).toArray().then(users => {
+          if (users.length === 0) {
+            db.collection('users').insertOne(userProfile).then(result => {
+              if (result.insertedCount === 1) {
+                res.send('User created');
               } else {
-                res.status(500).send(util.format('Error searching collection - %s', err));
+                next('Error creating user');
               }
-            }).catch(err => {
-              res.status(500).send(util.format('Error creating user - %s', err));
+            }).catch(err1 => {
+              next(util.format('Error creating user - %s', err1));
             });
+          } else {
+            res.send('User is validated');
           }
-          res.send({status: "ok"}); // if user already exists
-        }).catch(err => {
-          res.status(500).send(util.format('Error searching collection - %s', err));
+
+        }).catch(err2 => {
+          next(util.format('Error searching collection - %s', err2));
         });
       } else {
-        res.status(500).send('Invalid login');
+        next(err);
       }
     }
   );

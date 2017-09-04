@@ -1,6 +1,7 @@
 var express = require('express');
 var util = require('util');
 var router = express.Router();
+var ObjectId = require('mongodb').ObjectID;
 
 /* GET all cities - /api/cities */
 router.get('/', (req, res, next) => {
@@ -34,7 +35,7 @@ router.get('/:city_name/localities', (req, res, next) => {
   });
 });
 
-/* GET all schools in a locality - /api/cities/<city_name>/localities/<locality_name>/schools */
+/* GET all schools in a locality of a city - /api/cities/<city_name>/localities/<locality_name>/schools */
 router.get('/:city_name/localities/:locality_name/schools', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('schools', (err, schoolsCollection) => {
@@ -47,10 +48,27 @@ router.get('/:city_name/localities/:locality_name/schools', (req, res, next) => 
       }).toArray().then(schools => {
         res.send(schools);
       }).catch(err => {
-        res.status(500).send(util.format('Error searching collection - %s', err));
+        next(util.format('Error searching collection - %s', err));
       });
     } else {
-      res.status(500).send(util.format('Error getting collection - %s', err));
+      next.send(util.format('Error getting collection - %s', err));
+    }
+  });
+});
+
+/* GET school details in a locality of a city - /api/cities/<city_name>/localities/<locality_name>/schools/school_id */
+router.get('/:city_name/localities/:locality_name/schools/:school_id', (req, res, next) => {
+  var db = req.app.locals.db;
+  db.collection('schools', (err, schoolsCollection) => {
+    if (schoolsCollection) {
+      var objId = new ObjectId(req.params.school_id);
+      schoolsCollection.find({_id: objId}).toArray().then(school => {
+        res.send(school);
+      }).catch(err => {
+        next(util.format('Error searching collection - %s', err));
+      });
+    } else {
+      next.send(util.format('Error getting collection - %s', err));
     }
   });
 });
