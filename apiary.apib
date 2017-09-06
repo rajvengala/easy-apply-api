@@ -281,47 +281,50 @@ Update all/some of the properties of application data object
 
 + Response 200 (application/json)
 
-        {
-            "_id" : ObjectId("599e9b45db3e672960d64d77"),
-            "school" : {
-                "_id" : ObjectId("599e8ffedb3e672960d64d75"),
-                "name" : "National Public School",
-                "description" : "tasdasdasd",
-                "locality" : "Indiranagar",
-                "city" : "Bangalore",
-                "country" : "India",
-                "address" : "Somewhere",
-                "phone" : "2323232",
-                "board" : "CBSE",
-                "established" : "1983",
-                "url" : "http://xyz.com",
-                "admissionsFor" : [ 
-                    "Montessorie", 
-                    "Nursery"
-                ]
-
+        [
+            {
+                "_id" : ObjectId("599e9b45db3e672960d64d77"),
+                "school" : {
+                    "_id" : ObjectId("599e8ffedb3e672960d64d75"),
+                    "name" : "National Public School",
+                    "description" : "tasdasdasd",
+                    "locality" : "Indiranagar",
+                    "city" : "Bangalore",
+                    "country" : "India",
+                    "address" : "Somewhere",
+                    "phone" : "2323232",
+                    "board" : "CBSE",
+                    "established" : "1983",
+                    "url" : "http://xyz.com",
+                    "grades" : [ 
+                        "Montessorie", 
+                        "Nursery"
+                    ]
+    
+                }
+                "userId" : "unique_google_id",
+                "admissionYear" : "2018",
+                "applicant" : "Keara Vengala",
+                "grade" : "nursery",
+                "status" : "Paid",
+                "amount" : "530",
+                "paymentRef" : "asdasdasdasd"
             }
-            "userId" : "rvengala81@gmail.com",
-            "admissionYear" : "2018",
-            "kidName" : "Keara Vengala",
-            "admissionFor" : "nursery",
-            "status" : "Paid",
-            "amount" : "530",
-            "paymentRef" : "asdasdasdasd"
-        }
+        ]
 
 
 ## Submit Application [/applications]
 
-### Get user's school applications [POST]
+### Submit application for a school [POST]
 
 + Request (application/json)
 
         {
-            "userId" : "rvengala81@gmail.com",
+            "userId" : "unique_google_id",
+            "schoolId": "xxxxx",
             "admissionYear" : "2018",
-            "kidName" : "Keara Vengala",
-            "admissionFor" : "nursery",
+            "applicant" : "Keara Vengala",
+            "grade" : "nursery",
             "status" : "Paid",
             "amount" : "530",
             "paymentRef" : "asdasdasdasd"
@@ -343,7 +346,7 @@ Update all/some of the properties of application data object
                 "board" : "CBSE",
                 "established" : "1983",
                 "url" : "http://xyz.com",
-                "admissionsFor" : [ 
+                "grades" : [ 
                     "Montessorie", 
                     "Nursery"
                 ]
@@ -351,8 +354,8 @@ Update all/some of the properties of application data object
             }
             "userId" : "rvengala81@gmail.com",
             "admissionYear" : "2018",
-            "kidName" : "Keara Vengala",
-            "admissionFor" : "nursery",
+            "applicant" : "Keara Vengala",
+            "grade" : "nursery",
             "status" : "Paid",
             "amount" : "530",
             "paymentRef" : "asdasdasdasd"
