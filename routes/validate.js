@@ -9,46 +9,52 @@ router.post('/', (req, res, next) => {
   var auth = new GoogleAuth;
   var client = new auth.OAuth2(CLIENT_ID, '', '');
   client.verifyIdToken(req.body.idtoken, CLIENT_ID, (err, login) => {
-      if (login) {
-        var payload = login.getPayload();
-        var user_id = payload.sub;
-        var email = payload.email;
-        var name = payload.name;
-        var userProfile = {
-          _id: user_id,
-          profile: {
-            city: "",
-            name: name,
-            country: "India",
-            email: email,
-            phone: ""
-          }
-        };
+    if (login) {
+      var payload = login.getPayload();
+      var user_id = payload.sub;
+      var email = payload.email;
+      var name = payload.name;
+      var userProfile = {
+        _id: user_id,
+        profile: {
+          city: "",
+          name: name,
+          country: "India",
+          email: email,
+          phone: ""
+        }
+      };
 
-        var db = req.app.locals.db;
-        db.collection('users').find({_id: user_id}).toArray().then(users => {
-          if (users.length === 0) {
-            db.collection('users').insertOne(userProfile).then(result => {
+      var db = req.app.locals.db;
+      db.collection('users', {strict: true}, (err1, usersCollection) => {
+        if (usersCollection) {
+          usersCollection.find({_id: user_id}).toArray().then(users => {
+            if (users.length === 0) {
+              return db.collection('users').insertOne(userProfile);
+            } else {
+              res.send({message: 'User profile is validated'});
+            }
+          }).then(result => {
+            if (result) { // only if promise is returned from above block
               if (result.insertedCount === 1) {
-                res.send('User created');
+                res.send({message: 'Created new user profile'});
               } else {
-                next('Error creating user');
+                var err2 = new Error('Failed to create user');
+                err2.status = 500;
+                next(err2);
               }
-            }).catch(err1 => {
-              next(util.format('Error creating user - %s', err1));
-            });
-          } else {
-            res.send('User is validated');
-          }
-
-        }).catch(err2 => {
-          next(util.format('Error searching collection - %s', err2));
-        });
-      } else {
-        next(err);
-      }
+            }
+          }).catch(err3 => {
+            err3.status = 500;
+            next(err3);
+          });
+        } else {
+          err1.status = 500;
+          next(err1);
+        }
+      });
     }
-  );
+  });
 });
 
 module.exports = router;

@@ -4,15 +4,17 @@ var router = express.Router();
 /* GET user profile - /api/users/<user_id> */
 router.get('/:user_id', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', (err, usersCollection) => {
+  db.collection('users', {strict: true}, (err1, usersCollection) => {
     if (usersCollection) {
       usersCollection.find({_id: req.params.user_id}).toArray().then(user => {
         res.send(user);
-      }).catch(err => {
-        next(util.format('Error searching collection - %s', err));
+      }).catch(err2 => {
+        err2.status = 500;
+        next(err2);
       })
     } else {
-      next(util.format('Error getting collection - %s', err));
+      err1.status = 500;
+      next(err1);
     }
   });
 });
@@ -20,7 +22,7 @@ router.get('/:user_id', (req, res, next) => {
 /* PATCH user profile - /api/users/<user_id> */
 router.patch('/:user_id', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', (err, usersCollection) => {
+  db.collection('users', {strict: true}, (err1, usersCollection) => {
     if (usersCollection) {
       usersCollection.updateOne({_id: req.params.user_id}, {
         $set: {
@@ -28,13 +30,15 @@ router.patch('/:user_id', (req, res, next) => {
           'profile.city': (req.body.city) ? req.body.city : ''
         }
       }).then(result => {
-        res.send('User profile is updated');
-      }).catch(err => {
-        next(err)
+        res.send({message: 'User profile is updated'});
+      }).catch(err2 => {
+        err2.status = 500;
+        next(err2)
       });
 
     } else {
-      next(util.format('Error getting collection - %s', err));
+      err1.status = 500;
+      next(err1);
     }
   });
 });
@@ -42,7 +46,7 @@ router.patch('/:user_id', (req, res, next) => {
 /* GET user's application data - /api/users/<user_id>/app_data */
 router.get('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', (err, usersCollection) => {
+  db.collection('users', {strict: true}, (err1, usersCollection) => {
     if (usersCollection) {
       usersCollection.find({_id: req.params.user_id}).toArray().then(user => {
         if (user.application_data) {
@@ -50,11 +54,13 @@ router.get('/:user_id/app_data', (req, res, next) => {
         } else {
           res.send({});
         }
-      }).catch(err => {
-        next(util.format('Error searching collection - %s', err));
+      }).catch(err2 => {
+        err2.status = 500;
+        next(err2);
       })
     } else {
-      next(util.format('Error getting collection - %s', err));
+      err1.status = 500;
+      next(err1);
     }
   });
 });
@@ -62,19 +68,21 @@ router.get('/:user_id/app_data', (req, res, next) => {
 /* Create user's application data - /api/users/<user_id>/app_data */
 router.post('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', (err, usersCollection) => {
+  db.collection('users', {strict: true}, (err1, usersCollection) => {
     if (usersCollection) {
       usersCollection.updateOne({_id: req.params.user_id}, {
         $set: {
           'app_data': req.body,
         }
       }).then(result => {
-        res.send({description: 'User application data is created'});
-      }).catch(err => {
-        next(err)
+        res.send({message: 'User application data is created'});
+      }).catch(err2 => {
+        err2.status = 500;
+        next(err2)
       });
     } else {
-      next(util.format('Error getting collection - %s', err));
+      err1.status = 500;
+      next(err1);
     }
   });
 });
@@ -82,17 +90,19 @@ router.post('/:user_id/app_data', (req, res, next) => {
 /* Update user's application data - /api/users/<user_id>/app_data */
 router.patch('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', (err, usersCollection) => {
+  db.collection('users', {strict: true}, (err1, usersCollection) => {
     if (usersCollection) {
       usersCollection.updateOne({_id: req.params.user_id}, {
         $set: req.body
       }).then(result => {
-        res.send('User application data is updated');
-      }).catch(err => {
-        next(err)
+        res.send({message: 'User application data is updated'});
+      }).catch(err2 => {
+        err2.status = 500;
+        next(err2)
       });
     } else {
-      next(util.format('Error getting collection - %s', err));
+      err1.status = 500;
+      next(err1);
     }
   });
 });

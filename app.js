@@ -1,7 +1,8 @@
 var express = require('express');
 var path = require('path');
 var util = require('util');
-var logger = require('morgan');
+var fs = require('fs')
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -15,7 +16,7 @@ MongoClient.connect(dbUri, function (err, db) {
     app.locals.db = db.db(dbName);
     console.info('Switched database to %s', dbName);
   } else {
-    console.error(err);
+    throw err;
   }
 });
 
@@ -28,10 +29,16 @@ var apiContext = 'api';
 
 /* Configure Middleware */
 var app = express();
-app.use(logger('dev'));
+
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+app.use(morgan('combined', {stream: accessLogStream}))
+
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 app.use(express.static('public'));
+
 app.use(util.format('/%s/validate', apiContext), validateRoute);
 app.use(util.format('/%s/users', apiContext), usersRoute);
 app.use(util.format('/%s/cities', apiContext), citiesRoute);
@@ -47,7 +54,8 @@ app.use(function (req, res, next) {
 // error handler
 app.use(function (err, req, res, next) {
   res.status(err.status || 500).send({
-    description: err
+    message: err.message,
+    details: (err.stack) ? err.stack: 'N/A'
   });
 });
 
