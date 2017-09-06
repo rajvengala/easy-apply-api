@@ -300,14 +300,14 @@ Update all/some of the properties of application data object
                         "Nursery"
                     ]
     
-                }
-                "userId" : "unique_google_id",
-                "admissionYear" : "2018",
+                },
+                "user_id" : "unique_google_id",
+                "admission_year" : "2018",
                 "applicant" : "Keara Vengala",
                 "grade" : "nursery",
                 "status" : "Paid",
                 "amount" : "530",
-                "paymentRef" : "asdasdasdasd"
+                "payment_ref" : "asdasdasdasd"
             }
         ]
 
@@ -319,14 +319,14 @@ Update all/some of the properties of application data object
 + Request (application/json)
 
         {
-            "userId" : "unique_google_id",
-            "schoolId": "xxxxx",
-            "admissionYear" : "2018",
+            "user_id" : "unique_google_id",
+            "school_id": "xxxxx",
+            "admission_year" : "2018",
             "applicant" : "Keara Vengala",
             "grade" : "nursery",
             "status" : "Paid",
             "amount" : "530",
-            "paymentRef" : "asdasdasdasd"
+            "payment_ref" : "asdasdasdasd"
         }
         
 + Response 200 (application/json)
@@ -349,9 +349,8 @@ Update all/some of the properties of application data object
                     "Montessorie", 
                     "Nursery"
                 ]
-
-            }
-            "userId" : "rvengala81@gmail.com",
+            },
+            "user_id" : "rvengala81@gmail.com",
             "admission_year" : "2018",
             "applicant" : "Keara Vengala",
             "grade" : "nursery",
@@ -363,7 +362,7 @@ Update all/some of the properties of application data object
 ## Schools' applications [/applications/schools/{school_id}]
 
 + Parameters
-    + school_id (number) - ID of the user in the form of an integer
+    + school_id (number) - ID of the school in the form of an integer
     
 ### Get all applications for a school [GET]
 
@@ -372,9 +371,9 @@ Update all/some of the properties of application data object
         {
             "_id" : ObjectId("599e9b45db3e672960d64d77"),
             "school" : ObjectId("599e9b45db3e672960d64d77"),
-            "userId" : "rvengala81@gmail.com",
+            "user_id" : "unique_google_id",
             "admission_year" : "2018",
-            "kidName" : "Keara Vengala",
+            "applicant" : "Keara Vengala",
             "grade" : "nursery",
             "status" : "Paid",
             "amount" : "530",
