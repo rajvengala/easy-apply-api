@@ -77,28 +77,4 @@ router.get('/:city_name/localities/:locality_name/schools', (req, res, next) => 
   });
 });
 
-
-/*
- * Fetch a school's details in a locality of a city
- * GET /api/cities/<city_name>/localities/<locality_name>/schools/school_id
- *
- * */
-router.get('/:city_name/localities/:locality_name/schools/:school_id', (req, res, next) => {
-  var db = req.app.locals.db;
-  db.collection('schools', {strict: true}, (err, schoolsCollection) => {
-    if (schoolsCollection) {
-      var objId = new ObjectId(req.params.school_id);
-      schoolsCollection.find({_id: objId}).toArray().then(school => {
-        res.send(school);
-      }).catch(err => {
-        err.status = 500;
-        next(err);
-      });
-    } else {
-      err.status = 500;
-      next(err);
-    }
-  });
-});
-
 module.exports = router;

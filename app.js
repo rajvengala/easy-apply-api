@@ -24,6 +24,7 @@ MongoClient.connect(dbUri, function (err, db) {
 var validateRoute = require('./routes/validate');
 var usersRoute = require('./routes/users');
 var citiesRoute = require('./routes/cities');
+var schoolsRoute = require('./routes/schools');
 var applicationsRoute = require('./routes/applications');
 var apiContext = 'api';
 
@@ -42,6 +43,7 @@ app.use(express.static('public'));
 app.use(util.format('/%s/validate', apiContext), validateRoute);
 app.use(util.format('/%s/users', apiContext), usersRoute);
 app.use(util.format('/%s/cities', apiContext), citiesRoute);
+app.use(util.format('/%s/schools', apiContext), schoolsRoute);
 app.use(util.format('/%s/applications', apiContext), applicationsRoute);
 
 // catch 404 and forward to error handler

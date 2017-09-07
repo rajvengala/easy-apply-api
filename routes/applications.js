@@ -49,6 +49,8 @@ router.post('/', (req, res, next) => {
             // insert application
             var applicationCollection = db.collection('applications');
             if (applicationCollection) {
+              // replace school_id with Object of school_id passed to the API
+              req.body.school_id = new ObjectId(req.body.school_id);
               return applicationCollection.insertOne(req.body);
             } else {
               var err = new Error('Failed to fetch APPLICATIONS collection');
