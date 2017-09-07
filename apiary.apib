@@ -55,7 +55,7 @@ Easy Apply is a cloud based school admission processing service.
                 board : "CBSE",
                 established : "1983",
                 url : "http://xyz.com",
-                admissionsFor : [ "Montessorie", "Nursery"]
+                admissions_for : [ "Montessorie", "Nursery"]
             },
             {
                 id: 1,
@@ -69,7 +69,7 @@ Easy Apply is a cloud based school admission processing service.
                 board : "CBSE",
                 established : "1983",
                 url : "http://xyz.com",
-                admissionsFor : [ "Montessorie"]
+                admissions_for : [ "Montessorie"]
             }
         ]
 
@@ -96,7 +96,7 @@ Easy Apply is a cloud based school admission processing service.
             board : "CBSE",
             established : "1983",
             url : "http://xyz.com",
-            admissionsFor : [ "Montessorie", "Nursery"]
+            admissions_for : [ "Montessorie", "Nursery"]
         }
     
 ## Validate Google Sign-in [/validate]
@@ -158,43 +158,43 @@ User should update city and phone number after creating profile.
 + Response 200 (application/json)
 
         {
-            "homeAddress" : "Somewhere",
-            "homePhone" : "080-25282673",
+            "home_address" : "Somewhere",
+            "home_phone" : "080-25282673",
             "religion" : "None",
             "nationality" : "Indian"
             "father" : {
-                "firstName" : "Raja",
-                "lastName" : "Vengala",
+                "first_name" : "Raja",
+                "last_name" : "Vengala",
                 "dob" : "06/07/1981",
                 "salary" : "10000 per annum",
                 "company" : "Oracle",
-                "workAddress" : "somewhere",
-                "workPhone" : "Something",
+                "work_address" : "somewhere",
+                "work_phone" : "Something",
                 "designation" : "Something",
                 "mobile" : "9972095475",
                 "email" : "raj.vengala@outlook.com"
             },
             "mother" : {
-                "firstName" : "Pallavi",
-                "lastName" : "Venugopal",
+                "firs_name" : "Pallavi",
+                "last_name" : "Venugopal",
                 "dob" : "09/10/1981",
                 "salary" : "20000 per annum",
                 "company" : "IFlex",
-                "workAddress" : "somewhere",
-                "workPhone" : "something",
+                "work_address" : "somewhere",
+                "work_phone" : "something",
                 "designation" : "Something",
                 "mobile" : "9880055475",
                 "email" : "pallavi.vreddy@gmail.com"
             },
-            "kids" : [ 
+            "applicants" : [ 
                 {
-                    "firstName" : "Keara",
-                    "lastName" : "Vengala",
-                    "Sex" : "Female",
+                    "first_name" : "Keara",
+                    "last_name" : "Vengala",
+                    "sex" : "Female",
                     "dob" : "07-Dec-2011",
-                    "aadharId" : "232ASD",
-                    "physicalDisability" : "some comments",
-                    "mentalDisability" : "some comments"
+                    "aadhar_id" : "232ASD",
+                    "physical_disability" : "some comments",
+                    "mental_disability" : "some comments"
                 }
             ]
         }
@@ -204,43 +204,43 @@ User should update city and phone number after creating profile.
 + Request (application/json)
 
         {
-            "homeAddress" : "Somewhere",
-            "homePhone" : "080-25282673",
+            "home_address" : "Somewhere",
+            "home_phone" : "080-25282673",
             "religion" : "None",
             "nationality" : "Indian"
             "father" : {
-                "firstName" : "Raja",
-                "lastName" : "Vengala",
+                "first_name" : "Raja",
+                "last_name" : "Vengala",
                 "dob" : "06/07/1981",
                 "salary" : "10000 per annum",
                 "company" : "Oracle",
-                "workAddress" : "somewhere",
-                "workPhone" : "Something",
+                "work_address" : "somewhere",
+                "work_phone" : "Something",
                 "designation" : "Something",
                 "mobile" : "9972095475",
                 "email" : "raj.vengala@outlook.com"
             },
             "mother" : {
-                "firstName" : "Pallavi",
-                "lastName" : "Venugopal",
+                "first_name" : "Pallavi",
+                "last_name" : "Venugopal",
                 "dob" : "09/10/1981",
                 "salary" : "20000 per annum",
                 "company" : "IFlex",
-                "workAddress" : "somewhere",
-                "workPhone" : "something",
+                "work_address" : "somewhere",
+                "work_phone" : "something",
                 "designation" : "Something",
                 "mobile" : "9880055475",
                 "email" : "pallavi.vreddy@gmail.com"
             },
             "kids" : [ 
                 {
-                    "firstName" : "Keara",
-                    "lastName" : "Vengala",
-                    "Sex" : "Female",
+                    "first_name" : "Keara",
+                    "last_name" : "Vengala",
+                    "sex" : "Female",
                     "dob" : "07-Dec-2011",
-                    "aadharId" : "232ASD",
-                    "physicalDisability" : "some comments",
-                    "mentalDisability" : "some comments"
+                    "aadhar_id" : "232ASD",
+                    "physical_disability" : "some comments",
+                    "mental_disability" : "some comments"
                 }
             ]
         }
@@ -255,17 +255,16 @@ Update all/some of the properties of application data object
 
         {
             user_id: 'asdasd',
-            homePhone: '99812323',
-            phone: 'asdasd',
-            "kids" : [ 
+            home_phone: '99812323',
+            "applicants" : [ 
                 {
-                    "firstName" : "Keara",
-                    "lastName" : "Vengala",
-                    "Sex" : "Female",
+                    "first_name" : "Keara",
+                    "last_name" : "Vengala",
+                    "sex" : "Female",
                     "dob" : "07-Dec-2011",
-                    "aadharId" : "232ASD",
-                    "physicalDisability" : "some comments",
-                    "mentalDisability" : "some comments"
+                    "aadhar_id" : "232ASD",
+                    "physical_disability" : "some comments",
+                    "mental_disability" : "some comments"
                 }
             ]
         }
@@ -281,50 +280,51 @@ Update all/some of the properties of application data object
 
 + Response 200 (application/json)
 
-        {
-            "_id" : ObjectId("599e9b45db3e672960d64d77"),
-            "school" : {
-                "_id" : ObjectId("599e8ffedb3e672960d64d75"),
-                "name" : "National Public School",
-                "description" : "tasdasdasd",
-                "locality" : "Indiranagar",
-                "city" : "Bangalore",
-                "country" : "India",
-                "address" : "Somewhere",
-                "phone" : "2323232",
-                "board" : "CBSE",
-                "established" : "1983",
-                "url" : "http://xyz.com",
-                "admissionsFor" : [ 
-                    "Montessorie", 
-                    "Nursery"
-                ]
-
+        [
+            {
+                "_id" : ObjectId("599e9b45db3e672960d64d77"),
+                "school" : {
+                    "_id" : ObjectId("599e8ffedb3e672960d64d75"),
+                    "name" : "National Public School",
+                    "description" : "tasdasdasd",
+                    "locality" : "Indiranagar",
+                    "city" : "Bangalore",
+                    "country" : "India",
+                    "address" : "Somewhere",
+                    "phone" : "2323232",
+                    "board" : "CBSE",
+                    "established" : "1983",
+                    "url" : "http://xyz.com",
+                    "grades" : [ 
+                        "Montessorie", 
+                        "Nursery"
+                    ]
+    
+                },
+                "user_id" : "unique_google_id",
+                "admission_year" : "2018",
+                "applicant" : "Keara Vengala",
+                "grade" : "nursery",
+                "status" : "Paid",
+                "amount" : "530",
+                "payment_ref" : "asdasdasdasd"
             }
-            "userId" : "rvengala81@gmail.com",
-            "admissionYear" : "2018",
-            "kidName" : "Keara Vengala",
-            "admissionFor" : "nursery",
-            "status" : "Paid",
-            "amount" : "530",
-            "paymentRef" : "asdasdasdasd"
-        }
+        ]
 
 
 ## Submit Application [/applications]
 
-### Get user's school applications [POST]
+### Submit application for a school [POST]
 
 + Request (application/json)
 
         {
-            "userId" : "rvengala81@gmail.com",
-            "admissionYear" : "2018",
-            "kidName" : "Keara Vengala",
-            "admissionFor" : "nursery",
-            "status" : "Paid",
+            "user_id" : "unique_google_id",
+            "school_id": "xxxxx",
+            "admission_year" : "2018",
+            "applicant" : "Keara Vengala",
+            "grade" : "nursery",
             "amount" : "530",
-            "paymentRef" : "asdasdasdasd"
         }
         
 + Response 200 (application/json)
@@ -343,25 +343,24 @@ Update all/some of the properties of application data object
                 "board" : "CBSE",
                 "established" : "1983",
                 "url" : "http://xyz.com",
-                "admissionsFor" : [ 
+                "admissions_for" : [ 
                     "Montessorie", 
                     "Nursery"
                 ]
-
-            }
-            "userId" : "rvengala81@gmail.com",
-            "admissionYear" : "2018",
-            "kidName" : "Keara Vengala",
-            "admissionFor" : "nursery",
+            },
+            "user_id" : "rvengala81@gmail.com",
+            "admission_year" : "2018",
+            "applicant" : "Keara Vengala",
+            "grade" : "nursery",
             "status" : "Paid",
             "amount" : "530",
-            "paymentRef" : "asdasdasdasd"
+            "payment_ref" : "asdasdasdasd"
         }
 
 ## Schools' applications [/applications/schools/{school_id}]
 
 + Parameters
-    + school_id (number) - ID of the user in the form of an integer
+    + school_id (number) - ID of the school in the form of an integer
     
 ### Get all applications for a school [GET]
 
@@ -370,11 +369,11 @@ Update all/some of the properties of application data object
         {
             "_id" : ObjectId("599e9b45db3e672960d64d77"),
             "school" : ObjectId("599e9b45db3e672960d64d77"),
-            "userId" : "rvengala81@gmail.com",
-            "admissionYear" : "2018",
-            "kidName" : "Keara Vengala",
-            "admissionFor" : "nursery",
+            "user_id" : "unique_google_id",
+            "admission_year" : "2018",
+            "applicant" : "Keara Vengala",
+            "grade" : "nursery",
             "status" : "Paid",
             "amount" : "530",
-            "paymentRef" : "asdasdasdasd"
+            "payment_ref" : "asdasdasdasd"
         }
