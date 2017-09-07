@@ -73,11 +73,9 @@ Easy Apply is a cloud based school admission processing service.
             }
         ]
 
-## School [/cities/{city_id}/localities/{locality_id}/schools/{school_id}]
+## School [/schools/{school_id}]
 
 + Parameters
-    + city_id (number) - ID of the city in the form of an integer
-    + locality_id (number) - ID of the locality in the form of an integer
     + school_id (number) - ID of the school in the form of an integer
 
 ### Get school details in a locality of a city [GET]
@@ -357,7 +355,7 @@ Update all/some of the properties of application data object
             "payment_ref" : "asdasdasdasd"
         }
 
-## Schools' applications [/applications/schools/{school_id}]
+## Schools' applications [/schools/{school_id}/applications]
 
 + Parameters
     + school_id (number) - ID of the school in the form of an integer
