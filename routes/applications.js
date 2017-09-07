@@ -8,6 +8,8 @@ var ObjectId = require('mongodb').ObjectID;
  * */
 router.post('/', (req, res, next) => {
   var db = req.app.locals.db;
+  // adding status field to req body
+  req.body.status = 'submitted';
 
   db.collection('schools', {strict: true}, (err, schoolsCollection) => {
     // 1. Validate if school_id exists
