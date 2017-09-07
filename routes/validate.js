@@ -26,7 +26,7 @@ router.post('/', (req, res, next) => {
       };
 
       var db = req.app.locals.db;
-      db.collection('users', {strict: true}, (err1, usersCollection) => {
+      db.collection('users', {strict: true}, (err, usersCollection) => {
         if (usersCollection) {
           usersCollection.find({_id: user_id}).toArray().then(users => {
             if (users.length === 0) {
@@ -39,18 +39,18 @@ router.post('/', (req, res, next) => {
               if (result.insertedCount === 1) {
                 res.send({message: 'Created new user profile'});
               } else {
-                var err2 = new Error('Failed to create user');
-                err2.status = 500;
-                next(err2);
+                var err = new Error('Failed to create user');
+                err.status = 500;
+                throw err;
               }
             }
-          }).catch(err3 => {
-            err3.status = 500;
-            next(err3);
+          }).catch(err => {
+            err.status = 500;
+            next(err);
           });
         } else {
-          err1.status = 500;
-          next(err1);
+          err.status = 500;
+          next(err);
         }
       });
     }

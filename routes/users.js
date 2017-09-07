@@ -4,17 +4,17 @@ var router = express.Router();
 /* GET user profile - /api/users/<user_id> */
 router.get('/:user_id', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', {strict: true}, (err1, usersCollection) => {
+  db.collection('users', {strict: true}, (err, usersCollection) => {
     if (usersCollection) {
       usersCollection.find({_id: req.params.user_id}).toArray().then(user => {
         res.send(user);
-      }).catch(err2 => {
-        err2.status = 500;
-        next(err2);
+      }).catch(err => {
+        err.status = 500;
+        next(err);
       })
     } else {
-      err1.status = 500;
-      next(err1);
+      err.status = 500;
+      next(err);
     }
   });
 });
@@ -22,7 +22,7 @@ router.get('/:user_id', (req, res, next) => {
 /* PATCH user profile - /api/users/<user_id> */
 router.patch('/:user_id', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', {strict: true}, (err1, usersCollection) => {
+  db.collection('users', {strict: true}, (err, usersCollection) => {
     if (usersCollection) {
       usersCollection.updateOne({_id: req.params.user_id}, {
         $set: {
@@ -31,14 +31,13 @@ router.patch('/:user_id', (req, res, next) => {
         }
       }).then(result => {
         res.send({message: 'User profile is updated'});
-      }).catch(err2 => {
-        err2.status = 500;
-        next(err2)
+      }).catch(err => {
+        err.status = 500;
+        next(err)
       });
-
     } else {
-      err1.status = 500;
-      next(err1);
+      err.status = 500;
+      next(err);
     }
   });
 });
@@ -46,7 +45,7 @@ router.patch('/:user_id', (req, res, next) => {
 /* GET user's application data - /api/users/<user_id>/app_data */
 router.get('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', {strict: true}, (err1, usersCollection) => {
+  db.collection('users', {strict: true}, (err, usersCollection) => {
     if (usersCollection) {
       usersCollection.find({_id: req.params.user_id}).toArray().then(user => {
         if (user.application_data) {
@@ -54,13 +53,13 @@ router.get('/:user_id/app_data', (req, res, next) => {
         } else {
           res.send({});
         }
-      }).catch(err2 => {
-        err2.status = 500;
-        next(err2);
+      }).catch(err => {
+        err.status = 500;
+        next(err);
       })
     } else {
-      err1.status = 500;
-      next(err1);
+      err.status = 500;
+      next(err);
     }
   });
 });
@@ -68,7 +67,7 @@ router.get('/:user_id/app_data', (req, res, next) => {
 /* Create user's application data - /api/users/<user_id>/app_data */
 router.post('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', {strict: true}, (err1, usersCollection) => {
+  db.collection('users', {strict: true}, (err, usersCollection) => {
     if (usersCollection) {
       usersCollection.updateOne({_id: req.params.user_id}, {
         $set: {
@@ -76,13 +75,13 @@ router.post('/:user_id/app_data', (req, res, next) => {
         }
       }).then(result => {
         res.send({message: 'User application data is created'});
-      }).catch(err2 => {
-        err2.status = 500;
-        next(err2)
+      }).catch(err => {
+        err.status = 500;
+        next(err)
       });
     } else {
-      err1.status = 500;
-      next(err1);
+      err.status = 500;
+      next(err);
     }
   });
 });
@@ -90,19 +89,19 @@ router.post('/:user_id/app_data', (req, res, next) => {
 /* Update user's application data - /api/users/<user_id>/app_data */
 router.patch('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
-  db.collection('users', {strict: true}, (err1, usersCollection) => {
+  db.collection('users', {strict: true}, (err, usersCollection) => {
     if (usersCollection) {
       usersCollection.updateOne({_id: req.params.user_id}, {
         $set: req.body
       }).then(result => {
         res.send({message: 'User application data is updated'});
-      }).catch(err2 => {
-        err2.status = 500;
-        next(err2)
+      }).catch(err => {
+        err.status = 500;
+        next(err)
       });
     } else {
-      err1.status = 500;
-      next(err1);
+      err.status = 500;
+      next(err);
     }
   });
 });
