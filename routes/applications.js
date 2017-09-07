@@ -77,11 +77,6 @@ router.post('/', (req, res, next) => {
       next(err);
     }
   });
-
-  // TODO - validate for applicant name exists
-  // TODO - validate if grade exists
-  // TODO - validate if the application is already submitted for the same year
-
 });
 
 module.exports = router;
