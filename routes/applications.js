@@ -5,6 +5,7 @@ var ObjectId = require('mongodb').ObjectID;
 /**
  *  Submit school application
  *  POST /api/applications
+ *
  * */
 router.post('/', (req, res, next) => {
   var db = req.app.locals.db;

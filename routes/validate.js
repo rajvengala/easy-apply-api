@@ -3,7 +3,12 @@ var router = express.Router();
 var util = require('util');
 var GoogleAuth = require('google-auth-library');
 
-/* Validate user's token post google sign-in */
+
+/*
+* After Google SSO, valid the token received by the browser
+* on the server-side
+*
+* */
 router.post('/', (req, res, next) => {
   var CLIENT_ID = '944056354118-53uhhn2tnmmoaj2cj2830qmsreua2jvc.apps.googleusercontent.com';
   var auth = new GoogleAuth;

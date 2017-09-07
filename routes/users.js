@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /*
- * Read user's profile
+ * Fetch user's profile
  * GET /api/users/<user_id>
  *
  * */
@@ -53,7 +53,7 @@ router.patch('/:user_id', (req, res, next) => {
 
 
 /*
- * Read user's application data
+ * Fetch user's application data
  * GET /api/users/<user_id>/app_data
  *
  * */

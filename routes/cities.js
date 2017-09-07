@@ -3,7 +3,12 @@ var util = require('util');
 var router = express.Router();
 var ObjectId = require('mongodb').ObjectID;
 
-/* GET all cities - /api/cities */
+
+/*
+ * Fetch all cities
+ * GET /api/cities
+ *
+ * */
 router.get('/', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('schools', {strict: true}, (err, schoolsCollection) => {
@@ -21,7 +26,12 @@ router.get('/', (req, res, next) => {
   });
 });
 
-/* GET all localities - /api/cities/<city_name>/localities */
+
+/*
+ * Fetch all localities in a city
+ * GET /api/cities/<city_name>/localities
+ *
+ * */
 router.get('/:city_name/localities', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('schools', {strict: true}, (err, schoolsCollection) => {
@@ -39,7 +49,12 @@ router.get('/:city_name/localities', (req, res, next) => {
   });
 });
 
-/* GET all schools in a locality of a city - /api/cities/<city_name>/localities/<locality_name>/schools */
+
+/*
+ * Fetch all schools' details in a locality of a city
+ * GET /api/cities/<city_name>/localities/<locality_name>/schools
+ *
+ * */
 router.get('/:city_name/localities/:locality_name/schools', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('schools', {strict: true}, (err, schoolsCollection) => {
@@ -62,7 +77,12 @@ router.get('/:city_name/localities/:locality_name/schools', (req, res, next) => 
   });
 });
 
-/* GET school details in a locality of a city - /api/cities/<city_name>/localities/<locality_name>/schools/school_id */
+
+/*
+ * Fetch a school's details in a locality of a city
+ * GET /api/cities/<city_name>/localities/<locality_name>/schools/school_id
+ *
+ * */
 router.get('/:city_name/localities/:locality_name/schools/:school_id', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('schools', {strict: true}, (err, schoolsCollection) => {
