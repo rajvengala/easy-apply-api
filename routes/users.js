@@ -1,7 +1,11 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET user profile - /api/users/<user_id> */
+/*
+ * Read user's profile
+ * GET /api/users/<user_id>
+ *
+ * */
 router.get('/:user_id', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('users', {strict: true}, (err, usersCollection) => {
@@ -19,7 +23,12 @@ router.get('/:user_id', (req, res, next) => {
   });
 });
 
-/* PATCH user profile - /api/users/<user_id> */
+
+/*
+ * Update user's profile
+ * PATCH /api/users/<user_id>
+ *
+ * */
 router.patch('/:user_id', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('users', {strict: true}, (err, usersCollection) => {
@@ -42,7 +51,12 @@ router.patch('/:user_id', (req, res, next) => {
   });
 });
 
-/* GET user's application data - /api/users/<user_id>/app_data */
+
+/*
+ * Read user's application data
+ * GET /api/users/<user_id>/app_data
+ *
+ * */
 router.get('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('users', {strict: true}, (err, usersCollection) => {
@@ -64,7 +78,12 @@ router.get('/:user_id/app_data', (req, res, next) => {
   });
 });
 
-/* Create user's application data - /api/users/<user_id>/app_data */
+
+/*
+ * Create user's application data
+ * POST /api/users/<user_id>/app_data
+ *
+ * */
 router.post('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('users', {strict: true}, (err, usersCollection) => {
@@ -86,7 +105,12 @@ router.post('/:user_id/app_data', (req, res, next) => {
   });
 });
 
-/* Update user's application data - /api/users/<user_id>/app_data */
+
+/*
+ * Update user's application data
+ * PATCH /api/users/<user_id>/app_data
+ *
+ * */
 router.patch('/:user_id/app_data', (req, res, next) => {
   var db = req.app.locals.db;
   db.collection('users', {strict: true}, (err, usersCollection) => {
@@ -105,5 +129,28 @@ router.patch('/:user_id/app_data', (req, res, next) => {
     }
   });
 });
+
+
+/*
+ * Fetch user's submitted school applications
+ * GET /api/users/<user_id>/applications
+ * */
+router.get('/:user_id/applications', (req, res, next) => {
+  var db = req.app.locals.db;
+  db.collection('applications', {strict: true}, (err, applicationCollection) => {
+    if (applicationCollection) {
+      applicationCollection.find({user_id: req.params.user_id}).toArray().then(applications => {
+        res.send(applications);
+      }).catch(err => {
+        err.status = 500;
+        next(err);
+      })
+    } else {
+      err.status = 500;
+      next(err);
+    }
+  });
+});
+
 
 module.exports = router;
