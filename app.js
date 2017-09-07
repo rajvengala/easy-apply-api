@@ -9,7 +9,8 @@ var bodyParser = require('body-parser');
 /* Setup Mongodb connection */
 var dbName = 'easy-apply';
 var MongoClient = require('mongodb').MongoClient;
-var dbUri = "mongodb://localhost:27017";
+// var dbUri = "mongodb://localhost:27017";
+var dbUri = "mongodb://easy-apply-db:ea6bqdySBiW72INXhTAORSK6owRG1VXqQe45K70swIFYCsFzNKBKk7pvquBxASB0GZRPbrimqv2oxf8hioIeIQ==@easy-apply-db.documents.azure.com:10255/?ssl=true";
 MongoClient.connect(dbUri, function (err, db) {
   if (db) {
     console.info('Connected to Mongodb instance %s ', dbUri);
