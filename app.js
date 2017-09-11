@@ -5,15 +5,16 @@ var fs = require('fs')
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var config = require('./config/dev');
 
 /* Setup Mongodb connection */
-var dbName = 'easy-apply';
+var dbName = config.dbName;
 var MongoClient = require('mongodb').MongoClient;
-// var dbUri = "mongodb://localhost:27017";
-var dbUri = "mongodb://easy-apply-db:ea6bqdySBiW72INXhTAORSK6owRG1VXqQe45K70swIFYCsFzNKBKk7pvquBxASB0GZRPbrimqv2oxf8hioIeIQ==@easy-apply-db.documents.azure.com:10255/?ssl=true";
-MongoClient.connect(dbUri, function (err, db) {
+var dbConnStr = config.dbConnStr;
+MongoClient.connect(dbConnStr, function (err, db) {
   if (db) {
-    console.info('Connected to Mongodb instance %s ', dbUri);
+    console.info('Connected to Mongodb instance %s ', dbConnStr);
+
     app.locals.db = db.db(dbName);
     console.info('Switched database to %s', dbName);
   } else {
@@ -58,7 +59,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   res.status(err.status || 500).send({
     message: err.message,
-    details: (err.stack) ? err.stack: 'N/A'
+    details: (err.stack) ? err.stack : 'N/A'
   });
 });
 
