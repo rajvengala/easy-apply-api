@@ -5,8 +5,8 @@ var fs = require('fs')
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var config = require('./config/local');
-// var config = require('./config/dev');
+// var config = require('./config/local');
+var config = require('./config/dev');
 
 /* Setup Mongodb connection */
 var dbName = config.dbName;
