@@ -64,8 +64,9 @@ app.use(function (err, req, res, next) {
   });
 });
 
-app.listen(process.env.PORT || 3000, function () {
-  console.log('Easy Apply application listening on port 3000 ...')
+var port = process.env.PORT || 3000;
+app.listen(port, function () {
+  console.log('Server running at http://127.0.0.1:' + port + '/');
 });
 
 module.exports = app;
