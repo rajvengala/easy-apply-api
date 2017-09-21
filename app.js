@@ -5,6 +5,7 @@ var fs = require('fs')
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 // var config = require('./config/local');
 var config = require('./config/dev');
 
@@ -33,6 +34,10 @@ var apiContext = 'api';
 
 /* Configure Middleware */
 var app = express();
+
+/* Enable CORS */
+// app.options('*', cors()); // enable preflight
+app.use(cors());
 
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
