@@ -35,15 +35,6 @@ var apiContext = 'api';
 /* Configure Middleware */
 var app = express();
 
-/* Enable CORS */
-var corsOptions = {
-  origin: ['http://easyapply.online', 'http://localhost:4200'],
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-app.options('*', cors(corsOptions)); // enable preflight
-app.use(cors(corsOptions));
-
-
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 app.use(morgan('combined', {stream: accessLogStream}))
