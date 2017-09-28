@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var util = require('util');
 var ObjectId = require('mongodb').ObjectID;
+var request = require('request');
 
 /**
  *  Submit school application
@@ -12,6 +13,7 @@ router.post('/', (req, res, next) => {
   var db = req.app.locals.db;
   // adding status field to req body
   req.body.status = 'submitted';
+  var userEmail = '', userName = '', userPhone = '';
 
   db.collection('schools', {strict: true}, (err, schoolsCollection) => {
     // 1. Validate if school_id exists
@@ -48,6 +50,9 @@ router.post('/', (req, res, next) => {
             err.status = 500;
             throw err;
           } else {
+            userEmail = users[0].profile.email;
+            userName = users[0].profile.name;
+            userPhone = users[0].profile.phone;
             var applicationCollection = db.collection('applications');
             if (applicationCollection) {
               // replace school_id with Object of school_id passed to the API
@@ -92,7 +97,8 @@ router.post('/', (req, res, next) => {
         // All validation on request data done - submit the application
         if (result) {
           if (result.insertedCount === 1) {
-            res.send({message: 'User application is submitted'});
+            // redirect to payment gateway
+            createPaymentRequest(res, result.insertedId, req.body.amount, userPhone, userName, userEmail);
           } else {
             var err = new Error('Unable to submit application');
             err.status = 500;
@@ -109,6 +115,38 @@ router.post('/', (req, res, next) => {
     }
   });
 });
+
+// Create Payment Request
+function createPaymentRequest(res, transactionId, amount, phone, userName, userEmail) {
+  var headers = {
+    'X-Api-Key': '353fcc50ae1b39c4becc6f3b6f826d13',
+    'X-Auth-Token': '9e89dcc2d8a9251b0b017ae764df0c74'
+  };
+  var payload = {
+    purpose: transactionId + '',
+    amount: amount,
+    phone: (phone.length === 0) ? 9999999999 : phone,
+    buyer_name: userName,
+    redirect_url: 'http://localhost:3000/api/payment/',
+    send_email: false,
+    webhook: 'http://easyapply.online/api/payment/',
+    send_sms: false,
+    email: userEmail,
+    allow_repeated_payments: false
+  };
+  request.post('https://www.instamojo.com/api/1.1/payment-requests/', {
+    form: payload,
+    headers: headers
+  }, function (error, response, body) {
+    if (!error && response.statusCode == 201) {
+      res.redirect(JSON.parse(body).payment_request.longurl);
+      return;
+    } else {
+      res.send(body);
+      return;
+    }
+  });
+}
 
 module.exports = router;
 
