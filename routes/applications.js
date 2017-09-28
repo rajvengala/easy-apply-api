@@ -40,7 +40,7 @@ router.post('/', (req, res, next) => {
           } else {
             var err = new Error('Failed to fetch USERS collection');
             err.status = 500;
-            throw err;
+            next(err);
           }
         }
       }).then(users => {
@@ -48,7 +48,7 @@ router.post('/', (req, res, next) => {
           if (users.length !== 1) {
             var err = new Error('Invalid user');
             err.status = 500;
-            throw err;
+            next(err);
           } else {
             userEmail = users[0].profile.email;
             userName = users[0].profile.name;
@@ -64,7 +64,7 @@ router.post('/', (req, res, next) => {
             } else {
               var err = new Error('Failed to fetch APPLICATIONS collection');
               err.status = 500;
-              throw err;
+              next(err);
             }
           }
         }
@@ -102,7 +102,7 @@ router.post('/', (req, res, next) => {
           } else {
             var err = new Error('Unable to submit application');
             err.status = 500;
-            throw err;
+            next(err);
           }
         }
       }).catch(err => {
