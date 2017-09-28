@@ -152,5 +152,4 @@ router.get('/:user_id/applications', (req, res, next) => {
   });
 });
 
-
 module.exports = router;

@@ -119,8 +119,8 @@ router.post('/', (req, res, next) => {
 // Create Payment Request
 function createPaymentRequest(res, transactionId, amount, phone, userName, userEmail) {
   var headers = {
-    'X-Api-Key': '353fcc50ae1b39c4becc6f3b6f826d13',
-    'X-Auth-Token': '9e89dcc2d8a9251b0b017ae764df0c74'
+    'X-Api-Key': app.local.paymentApiToken,
+    'X-Auth-Token': app.local.paymentAuthToken
   };
   var payload = {
     purpose: transactionId + '',

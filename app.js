@@ -5,9 +5,11 @@ var fs = require('fs')
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var cors = require('cors');
-// var config = require('./config/local');
-var config = require('./config/dev');
+var config = require('./config/local');
+// var config = require('./config/dev');
+
+app.locals.paymentApiToken = config.paymentApiToken;
+app.locals.paymentAuthToken = config.paymentAuthToken;
 
 /* Setup Mongodb connection */
 var dbName = config.dbName;
@@ -16,7 +18,6 @@ var dbConnStr = config.dbConnStr;
 MongoClient.connect(dbConnStr, function (err, db) {
   if (db) {
     console.info('Connected to Mongodb instance %s ', dbConnStr);
-
     app.locals.db = db.db(dbName);
     console.info('Switched database to %s', dbName);
   } else {
@@ -24,31 +25,30 @@ MongoClient.connect(dbConnStr, function (err, db) {
   }
 });
 
+var app = express();
+
+/* Configure Middleware */
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
+app.use(morgan('combined', {stream: accessLogStream}))
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.static('public'));
+
 /* Import Routes */
 var validateRoute = require('./routes/validate');
 var usersRoute = require('./routes/users');
 var citiesRoute = require('./routes/cities');
 var schoolsRoute = require('./routes/schools');
 var applicationsRoute = require('./routes/applications');
+var paymentRoute = require('./routes/payment');
 var apiContext = 'api';
-
-/* Configure Middleware */
-var app = express();
-
-// create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
-app.use(morgan('combined', {stream: accessLogStream}))
-
-app.use(bodyParser.json());
-app.use(cookieParser());
-
-app.use(express.static('public'));
-
 app.use(util.format('/%s/validate', apiContext), validateRoute);
 app.use(util.format('/%s/users', apiContext), usersRoute);
 app.use(util.format('/%s/cities', apiContext), citiesRoute);
 app.use(util.format('/%s/schools', apiContext), schoolsRoute);
 app.use(util.format('/%s/applications', apiContext), applicationsRoute);
+app.use(util.format('/%s/payment', apiContext), paymentRoute);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
