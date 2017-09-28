@@ -4,3 +4,4 @@ config/dev.js
 config/prod.js
 config/local.js
 *.zip
+*.tgz
