@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var util = require('util');
 var ObjectId = require('mongodb').ObjectID;
 
 /**
@@ -26,8 +27,9 @@ router.post('/', (req, res, next) => {
       schoolsCollection.find({_id: schoolId}).toArray().then(schools => {
         if (schools.length !== 1) {
           var err = new Error('Invalid school');
-          err.status = 500;
-          throw err;
+          err.status = 400;
+          next(err);
+          return;
         } else {
           // 2. Validate if user_id exists
           var usersCollection = db.collection('users');
@@ -46,19 +48,45 @@ router.post('/', (req, res, next) => {
             err.status = 500;
             throw err;
           } else {
-            // insert application
             var applicationCollection = db.collection('applications');
             if (applicationCollection) {
-              // TODO - validate if application already exists for the applicant
               // replace school_id with Object of school_id passed to the API
               req.body.school_id = new ObjectId(req.body.school_id);
-              return applicationCollection.insertOne(req.body);
+
+              // Find all applicants submitted by the logon user for this school
+              return applicationCollection.find({user_id: req.body.user_id, school_id: req.body.school_id}).toArray();
+
             } else {
               var err = new Error('Failed to fetch APPLICATIONS collection');
               err.status = 500;
               throw err;
             }
           }
+        }
+      }).then(applications => {
+        if (applications) {
+          // Validate if application already exists for the applicant:
+          // If hash of school_id, admission_year, applicant, grade
+          // exists for user_id, application is already submitted
+          for (var application of applications) {
+            var applicationSig = util.format('%s-%s-%s-%s', application.school_id,
+              application.admission_year,
+              application.grade,
+              application.applicant);
+
+            var newApplicationSig = util.format('%s-%s-%s-%s', req.body.school_id,
+              req.body.admission_year,
+              req.body.grade,
+              req.body.applicant);
+
+            if (applicationSig === newApplicationSig) {
+              var err = new Error('Application already submitted');
+              err.status = 400;
+              next(err);
+              return;
+            }
+          }
+          return db.collection('applications').insertOne(req.body);
         }
       }).then(result => {
         // All validation on request data done - submit the application
@@ -72,9 +100,6 @@ router.post('/', (req, res, next) => {
           }
         }
       }).catch(err => {
-        if (err.message.indexOf('duplicate key error collection')) {
-          err.message = 'Application already submitted';
-        }
         err.status = 500;
         next(err);
       });
