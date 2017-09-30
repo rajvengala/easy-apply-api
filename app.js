@@ -5,11 +5,16 @@ var fs = require('fs')
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var config = require('./config/local');
-// var config = require('./config/dev');
+// var config = require('./config/local');
+var config = require('./config/dev');
+
+var app = express();
 
 app.locals.paymentApiToken = config.paymentApiToken;
 app.locals.paymentAuthToken = config.paymentAuthToken;
+app.locals.paymentGatewayUrl = config.paymentGatewayUrl;
+app.locals.paymentRedirectUrl = config.paymentRedirectUrl;
+app.locals.paymentWebhookUrl = config.paymentWebhookUrl;
 
 /* Setup Mongodb connection */
 var dbName = config.dbName;
@@ -25,13 +30,11 @@ MongoClient.connect(dbConnStr, function (err, db) {
   }
 });
 
-var app = express();
-
 /* Configure Middleware */
 // create a write stream (in append mode)
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 app.use(morgan('combined', {stream: accessLogStream}))
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static('public'));
 

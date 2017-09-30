@@ -12,7 +12,7 @@ var request = require('request');
 router.post('/', (req, res, next) => {
   var db = req.app.locals.db;
   // adding status field to req body
-  req.body.status = 'submitted';
+  req.body.status = 'pending';
   var userEmail = '', userName = '', userPhone = '';
 
   db.collection('schools', {strict: true}, (err, schoolsCollection) => {
@@ -98,7 +98,7 @@ router.post('/', (req, res, next) => {
         if (result) {
           if (result.insertedCount === 1) {
             // redirect to payment gateway
-            createPaymentRequest(res, result.insertedId, req.body.amount, userPhone, userName, userEmail);
+            createPaymentRequest(req, res, result.insertedId, req.body.amount, userPhone, userName, userEmail);
           } else {
             var err = new Error('Unable to submit application');
             err.status = 500;
@@ -117,33 +117,31 @@ router.post('/', (req, res, next) => {
 });
 
 // Create Payment Request
-function createPaymentRequest(res, transactionId, amount, phone, userName, userEmail) {
+function createPaymentRequest(req, res, applicationId, amount, phone, userName, userEmail) {
   var headers = {
-    'X-Api-Key': app.local.paymentApiToken,
-    'X-Auth-Token': app.local.paymentAuthToken
+    'X-Api-Key': req.app.locals.paymentApiToken,
+    'X-Auth-Token': req.app.locals.paymentAuthToken
   };
   var payload = {
-    purpose: transactionId + '',
+    purpose: applicationId + '',
     amount: amount,
     phone: (phone.length === 0) ? 9999999999 : phone,
     buyer_name: userName,
-    redirect_url: 'http://localhost:3000/api/payment/',
+    redirect_url: req.app.locals.paymentRedirectUrl,
     send_email: false,
-    webhook: 'http://easyapply.online/api/payment/',
+    webhook: req.app.locals.paymentWebhookUrl,
     send_sms: false,
     email: userEmail,
     allow_repeated_payments: false
   };
-  request.post('https://www.instamojo.com/api/1.1/payment-requests/', {
-    form: payload,
-    headers: headers
+  request.post(util.format('%s/payment-requests/', req.app.locals.paymentGatewayUrl), {
+    headers: headers,
+    form: payload
   }, function (error, response, body) {
     if (!error && response.statusCode == 201) {
       res.redirect(JSON.parse(body).payment_request.longurl);
-      return;
     } else {
       res.send(body);
-      return;
     }
   });
 }
