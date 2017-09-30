@@ -98,8 +98,7 @@ function updateApplicationStatus(req, res, applicationId, paymentStatus) {
  * */
 router.post('/', (req, res, next) => {
   var applicationId = req.body.purpose;
-  var paymentStatus = req.body.status;
-  console.log(applicationId, paymentStatus);
+  var paymentStatus = req.body.status.toLowerCase();
   updateApplicationStatus(req, res, applicationId, paymentStatus);
 });
 
